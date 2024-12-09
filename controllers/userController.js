@@ -381,13 +381,6 @@ exports.loginVendor = async (req, res) => {
 
 // Page de gestion de connexion pour vendeur
 exports.loginGestion = async (req, res) => {
-
-  req.session.destroy((err) => {
-    if (err) {
-      return next(err);
-    }
-  });
-
   let error = "";
   try {
     const { email, password } = req.body;

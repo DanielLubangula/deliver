@@ -120,11 +120,6 @@ const upload = multer({ storage: storage }).single("companyLogo");
 exports.registerGestion = async (req, res) => {
   let msgErr = "";
 
-  req.session.destroy((err) => {
-    if (err) {
-      return next(err);
-    }
-  });
   // Vérification de l'utilisateur non connecté
 
   upload(req, res, async (err) => {
