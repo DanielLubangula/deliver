@@ -7,6 +7,7 @@ const Message = require('../models/Message')
 exports.chat = async (req, res) => {
     const userId = req.params.idUser
     const productId = req.params.idProduct
+    console.log("productId", productId, " userId", userId)
 
     // Rechercher le nom et le chemin de l'image de l'utilisateur
     const user = await User.findById(userId) || await Vendor.findById(userId)

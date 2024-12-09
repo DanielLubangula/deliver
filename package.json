@@ -6,7 +6,7 @@
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build:css": "npx tailwindcss -i ./public/style/main.css -o ./public/style/output.css --watch"
-  },
+  }, 
   "keywords": [],
   "author": "",
   "license": "ISC",
