@@ -502,7 +502,7 @@ function closeButton() {
   document.querySelector(".headerVendor").style.display = "block";
   setTimeout(function () {
     ApiProduct();
-  }, 2000);
+  }, 5000);
 }
 
 function closeModal() {
@@ -789,7 +789,7 @@ async function confirmDelete() {
           ApiProduct();
           productRow.remove();
           document.querySelector("#productTable").classList.remove("disabled");
-        }, 1000);
+        }, 5000);
       } else {
         console.error(
           "Erreur lors de la suppression du produit :",

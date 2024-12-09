@@ -13,9 +13,9 @@
         // Gestion des notifications
         document.addEventListener('DOMContentLoaded', function() {
             const notificationBell = document.querySelector('.fa-bell');
-            notificationBell.addEventListener('click', function() {
-                alert('Notifications:\n- Nouvelle commande reçue\n- Avis client en attente\n- Stock faible sur 2 produits');
-            });
+            // notificationBell.addEventListener('click', function() {
+            //     alert('Notifications:\n- Nouvelle commande reçue\n- Avis client en attente\n- Stock faible sur 2 produits');
+            // });
         });
 
         // Ajustement du sidebar pour les écrans mobiles
