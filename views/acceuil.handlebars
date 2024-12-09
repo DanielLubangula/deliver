@@ -787,9 +787,15 @@ async function fetchCatalogue() {
         }
 
         container.appendChild(loadingContainer);
+
+        const baseURL =
+          window.location.origin.includes('localhost')
+            ? 'http://localhost:5000'
+            : 'https://deliver-jvwl.onrender.com/deliver/allCatalogue';
+
         
         // Requête pour obtenir le catalogue depuis l'API
-        const response = await fetch('http://localhost:5000/deliver/allCatalogue');
+        const response = await fetch(`${baseURL}/deliver/allCatalogue`);
         //const response = await fetch('http://192.168.43.14:5000/deliver/allCatalogue'); 
         if (!response.ok) throw new Error('Erreur lors de la récupération du catalogue');
 
