@@ -121,7 +121,7 @@ exports.editProduct = async (req, res) => {
             // Traitement et compression avec sharp
             const processedImageBuffer = await sharp(file.buffer)
               .resize({ width: 250, height: 250 }) // Redimensionner l'image
-              .jpeg({ quality: 10 }) // Compresser l'image en qualité 10
+              .jpeg({ quality: 90 }) // Compresser l'image en qualité 10
               .toBuffer();
 
             // Sauvegarder l'image sur le disque
