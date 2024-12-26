@@ -535,6 +535,7 @@ module.exports = (io) => {
 
         const { userId } = sessionUser;
 
+        console.log("productId ",productId)
         const likeProduct = await likedProduct.findOne({
           productId: productId.productId,
         });

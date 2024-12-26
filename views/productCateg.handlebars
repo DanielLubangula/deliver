@@ -256,6 +256,12 @@ body {
 
 }
 
+.maxHeighDiv{
+  transition: all 0.5s ease;
+  overflow: hidden;
+
+}
+
 .limitComment{
   max-height: 300px;
   overflow: scroll;
@@ -515,7 +521,8 @@ socket.on('updateLikeResponse', (data) => {
 
 function createProductCard(product) {
 const card = document.createElement('div');
-card.className = 'marginCenter maxHeighDiv maxHeigh card padding5 bg-white rounded-xl shadow-lg overflow-hidden relative transition-transform duration-300 hover:-translate-y-1 w-full sm:w-80';
+card.className = 'maxHeighDiv maxWeight maxHeigh card padding5 bg-white rounded-xl shadow-lg overflow-hidden relative transition-transform duration-300 hover:-translate-y-1 w-full sm:w-80';
+
 const hasMultipleImages = product.images.length > 1;
 card.innerHTML = `
     <div class="relative h-[200px] sm:h-[280px] overflow-hidden marginCenter">
@@ -554,15 +561,15 @@ card.innerHTML = `
     <!-- Section des likes -->
     <div class="flex items-center gap-2">
       <!-- Compteur de likes -->
-      <span data-like-product="${product.id}" class="likes-count text-sm text-gray-600"></span>
+      <span data-like-product="${product._id}" style="color : white; text-shadow : 0px 0px 5px black" class="likes-count text-sm text-gray-600"></span>
 
       <!-- Bouton de like -->
       <button
-        data-like-product-button="${product.id}"
+        data-like-product-button="${product._id}"
         class="like-button transition-transform hover:scale-110 text-gray-600 hover:text-red-500"
-        data-like-product="${product.id}"
+        data-like-product="${product._id}"
         data-isLiked="no"
-        onclick="updateLikedProduct('${product.id}', this)"
+        onclick="updateLikedProduct('${product._id}', this)"
       >
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
@@ -905,7 +912,6 @@ function displayComment(comment) {
     const isAuthor = utilisateurId === comment.userId;
     const commentClass = isAuthor ? "own message" : "other message";
     
-
     //commentElement.classList.add('p-2'); 
     commentElement.innerHTML = `
         <div style="position : relative;  ${comment.isDeleted ?"border: 1px solid rgba(241, 1, 1, 0.281);background: rgba(230, 7, 7, 0.13);" : ""}" class="isComment bg-gray-50 ${commentClass} p-3 rounded-lg " id="comment-${comment._id}">
@@ -921,7 +927,7 @@ function displayComment(comment) {
                         <circle cx="12" cy="18" r="2"/>
                     </svg>
                 </button>
-              <div style="z-index: 1001; top: 30px; right: 25px" class="hidden comment-actions absolute right-0 top-8 bg-white shadow-lg rounded-lg z-10 py-1 w-32">
+              <div style="z-index: 1001;top: 30px;right: 25px;height: 115px;overflow: scroll;" class="hidden comment-actions absolute right-0 top-8 bg-white shadow-lg rounded-lg z-10 py-1 w-32">
                     <button class="reply-btn w-full text-left px-4 py-2 hover:bg-gray-100 text-sm" onclick="showReplyPreview(this)">Reply</button>
                     <button class="report-btn w-full text-left px-4 py-2 hover:bg-gray-100 text-sm text-red-500">Report</button>
                     ${isAuthor ? `<button  class="delete-btn w-full text-left px-4 py-2 hover:bg-gray-100 text-sm text-red-500" onclick="deleteComment('${comment._id}')">Delete</button>` : ""}
@@ -1005,6 +1011,8 @@ function loadingCards(){
 }
 
 function recuperationProduits(category, page){
+  
+  
     // Récupération des produits 
     const objectCategory = {
       categoryDetail : category,
@@ -1078,6 +1086,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // spinner de chargement des cartes
     loadingCards()
     category = e.target.value;
+
+    // Initialisation de valeur
+    document.getElementById('sort').selected = "Popularité"
+    document.getElementById('price').value = ""
+    document.getElementById('priceValue').textContent = '500€'
 
     
     map.clear(); // Effacer le contenu de map pour initialiser les nombres de like 
@@ -1268,7 +1281,7 @@ socket.on("repliesLoaded", (objectResponseComment) => {
                         <circle cx="12" cy="18" r="2"/>
                     </svg>
                 </button>
-                <div style="z-index: 1001; top: 30px; right: 25px" class="hidden comment-actions absolute right-0 top-8 bg-white shadow-lg rounded-lg z-10 py-1 w-32">
+                <div style="z-index: 1001;top: 30px;right: 25px;height: 115px;overflow: scroll;" class="hidden comment-actions absolute right-0 top-8 bg-white shadow-lg rounded-lg z-10 py-1 w-32">
                     <button class="reply-btn w-full text-left px-4 py-2 hover:bg-gray-100 text-sm" onclick="showReplyPreview(this)">Reply</button>
                     <button class="report-btn w-full text-left px-4 py-2 hover:bg-gray-100 text-sm text-red-500">Report</button>
                     ${isAuthor ? `<button  class="delete-btn w-full text-left px-4 py-2 hover:bg-gray-100 text-sm text-red-500" onclick="deleteComment('${reply._id}')">Delete</button>` : ""}

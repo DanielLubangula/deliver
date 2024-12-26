@@ -240,4 +240,7 @@ router.get("/admin/api/findProduct", adminController.findAllProduct);
 // Route admin pour acceder à la page produit
 router.delete("/admin/api/findProduct/:id", adminController.deleteProductAdmin);
 
+// Route pour acceder à la page produit 
+router.get("/pageMonoProduit/:id", userController.pageMonoProduit);
+
 module.exports = router;

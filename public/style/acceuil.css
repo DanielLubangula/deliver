@@ -876,6 +876,10 @@ main{
 
 }
 
+.maxWeight{
+  max-width: 320px;
+}
+
 .limitComment{
   max-height: 300px;
   overflow: scroll;

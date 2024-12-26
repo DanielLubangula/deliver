@@ -124,7 +124,6 @@ body {
     align-items: center;
     justify-content: center;
     gap: 10px;
-    border: 1px solid #dadce0;
     border-radius: 4px;
     padding: 12px 24px;
     cursor: pointer;
@@ -145,6 +144,7 @@ body {
 
 /* MEDIA QUERIES POUR RESPONSIVE DESIGN */
 @media (max-width: 768px) {
+   
     .header {
         flex-direction: column;
         text-align: center;
@@ -175,6 +175,15 @@ body {
 }
 
 @media (max-width: 480px) {
+
+    .form-container{
+
+        font-size: 0.8rem;
+    }
+    .form-toggle{
+        font-size: 0.8rem;
+    }
+
     .form-title {
         font-size: 1.2rem;
     }
@@ -213,7 +222,7 @@ body {
             <button class="form-submit" type="submit">Se connecter</button>
             </form>
             <p>
-                <a href="/deliver/forgotPassword" class="forgot-password-link">Mot de passe oublié ?</a>
+                {{!-- <a href="/deliver/forgotPassword" class="forgot-password-link">Mot de passe oublié ?</a> --}}
             </p>
 
 

@@ -522,6 +522,7 @@ socket.on("updateNotif", async (data) => {
   const message = formatMessage(latestNotification, contentType);
 
   // Mettre à jour le compteur de notifications
+  console.log('numberNotif', document.querySelector('.numberNotif'))
   document.querySelector('.numberNotif').innerHTML = data.number;
 
    // Réajuster le nom au cas où il s'agit d'un acheteur
@@ -897,6 +898,7 @@ async function createCategorySection(category, container) {
 // Fonction pour créer une carte produit avec un carrousel et le format souhaité
 let likeDuButton = null // cette variable permet d'enlever le like au cas où l'utilisateur qui like n'a pas de session
 function updateLikedProduct(productId, likeButton) {
+event.stopPropagation()
 likeDuButton = likeButton
   if (likeButton.getAttribute("data-isLiked") !== "yes") {
     // Appliquer la couleur de remplissage et le trait pour "like"
@@ -916,7 +918,7 @@ let map = new Map()
 function createProductCard(product) {
 
 const card = document.createElement('div');
-card.className = 'maxHeighDiv maxHeigh card padding5 bg-white rounded-xl shadow-lg overflow-hidden relative transition-transform duration-300 hover:-translate-y-1 w-full sm:w-80';
+card.className = 'maxHeighDiv maxWeight maxHeigh card padding5 bg-white rounded-xl shadow-lg overflow-hidden relative transition-transform duration-300 hover:-translate-y-1 w-full sm:w-80';
 
 const hasMultipleImages = product.images.length > 1;
 card.innerHTML = `
@@ -943,7 +945,7 @@ card.innerHTML = `
                 `).join('')}
             </div>
         ` : ''}
-       <div class="namePriceLike">
+       <div class="namePriceLike" onclick="pageMonoProduit('${product.id}')">
   <div class="flex justify-between items-center mb-2">
     <!-- Nom du produit -->
     <h2
@@ -955,7 +957,7 @@ card.innerHTML = `
     <!-- Section des likes -->
     <div class="flex items-center gap-2">
       <!-- Compteur de likes -->
-      <span data-like-product="${product.id}" class="likes-count text-sm text-gray-600"></span>
+      <span data-like-product="${product.id}" style="color : white; text-shadow : 0px 0px 5px black" class="likes-count text-sm text-gray-600"></span>
 
       <!-- Bouton de like -->
       <button
@@ -1301,13 +1303,16 @@ function toggleComments(button) {
 }
 
 function displayComment(comment) {
+
+    console.log("comment", comment.isDeleted)
+
     const commentElement = document.createElement('div');
     const isAuthor = utilisateurId === comment.userId;
     const commentClass = isAuthor ? "own message" : "other message";
 
     //commentElement.classList.add('p-2');
     commentElement.innerHTML = `
-        <div style="position : relative;" class="isComment bg-gray-50 p-3 rounded-lg ${commentClass}" id="comment-${comment._id}">
+        <div style="position : relative;  ${comment.isDeleted ?"border: 1px solid rgba(241, 1, 1, 0.281);background: rgba(230, 7, 7, 0.13);font-style : italic" : ""}" class="isComment bg-gray-50 p-3 rounded-lg ${commentClass}" id="comment-${comment._id}">
             <div class="flex items-center justify-between mb-1">
                 <div class="flex items-center gap-2 mb-1">
                     <img src="${comment.profileImagePath}" data-user="${comment.userId}" alt="User avatar" class="profile-pic" onclick="showUserInfo(this)" class="rounded-full">
@@ -1320,7 +1325,7 @@ function displayComment(comment) {
                         <circle cx="12" cy="18" r="2"/>
                     </svg>
                 </button>
-              <div style="z-index: 1001; top: 30px; right: 25px" class="hidden comment-actions absolute right-0 top-8 bg-white shadow-lg rounded-lg z-10 py-1 w-32">
+              <div style="z-index: 1001;top: 30px;right: 25px;height: 115px;overflow: scroll;" class="hidden comment-actions absolute right-0 top-8 bg-white shadow-lg rounded-lg z-10 py-1 w-32">
                     <button class="reply-btn w-full text-left px-4 py-2 hover:bg-gray-100 text-sm" onclick="showReplyPreview(this)">Reply</button>
                     <button class="report-btn w-full text-left px-4 py-2 hover:bg-gray-100 text-sm text-red-500">Report</button>
                     ${isAuthor ? `<button  class="delete-btn w-full text-left px-4 py-2 hover:bg-gray-100 text-sm text-red-500" onclick="deleteComment('${comment._id}')">Delete</button>` : ""}
@@ -1412,7 +1417,7 @@ socket.on("repliesLoaded", (objectResponseComment) => {
                         <circle cx="12" cy="18" r="2"/>
                     </svg>
                 </button>
-                <div style="z-index: 1001; top: 30px; right: 25px" class="hidden comment-actions absolute right-0 top-8 bg-white shadow-lg rounded-lg z-10 py-1 w-32">
+                <div style="z-index: 1001;top: 30px;right: 25px;height: 115px;overflow: scroll;" class="hidden comment-actions absolute right-0 top-8 bg-white shadow-lg rounded-lg z-10 py-1 w-32">
                     <button class="reply-btn w-full text-left px-4 py-2 hover:bg-gray-100 text-sm" onclick="showReplyPreview(this)">Reply</button>
                     <button class="report-btn w-full text-left px-4 py-2 hover:bg-gray-100 text-sm text-red-500">Report</button>
                     ${isAuthor ? `<button  class="delete-btn w-full text-left px-4 py-2 hover:bg-gray-100 text-sm text-red-500" onclick="deleteComment('${reply._id}')">Delete</button>` : ""}
@@ -1552,6 +1557,7 @@ console.log(newReply)
 
 function deleteComment(commentId) {
     // Envoyer une requête DELETE à l'API
+    console.log("commentId",commentId)
     fetch(`/deliver/api/comments/delete-comment/${commentId}`, {
         method: 'DELETE',
         headers: {
@@ -1561,11 +1567,11 @@ function deleteComment(commentId) {
     })
         .then(response => response.json())
         .then(data => {
-            if (data.message === "Commentaire supprimé avec succès.") {
+          console.log(data)
+            if (data.message === "ok") {
               console.log("Commentaire supprimé")
                 // Retirer le commentaire du DOM
-                document.getElementById(`comment-${commentId}`).style.display = "none"
-                document.getElementById(`comment-${commentId}`).remove();
+                document.getElementById(`comment-${commentId}`).innerHTML = "Ce commentaire a été supprimé."
             } else {
                 alert(data.message || "Impossible de supprimer le commentaire.");
             }
@@ -1574,6 +1580,7 @@ function deleteComment(commentId) {
             console.error("Erreur :", error);
             alert("Une erreur est survenue.");
         });
+
 }
 
 
@@ -1672,6 +1679,12 @@ fetchCatalogue();
     function generateTabId() {
         return '_' + Math.random().toString(36).substr(2, 9);
     }
+
+  // ************************************** Acceder à la page voir le produit
+  function pageMonoProduit (id) {
+    console.log(id)
+    location.assign(`/deliver/pageMonoProduit/${id}`)
+  }
 
     // Stocker ou récupérer l'ID de l'onglet dans un cookie
     function getTabId() {

@@ -576,6 +576,42 @@ exports.getListChatUser = async (req, res) => {
   }
 };
 
+
+// Route pour afficher un produit sur une une page
+// Backend Route for displaying a single product on a page
+exports.pageMonoProduit = async (req, res) => {
+  try {
+    const productId = req.params.id;
+
+    // Fetch product details from the database
+    const product = await Product.findById(productId);
+    const seller = await Vendor.findById(product.seller) || await User.findById(product.seller);
+
+    if (!product) {
+      return res.status(404).send("Product not found");
+    }
+
+    // Render the product page with the product data
+    res.render("pageMonoProduit", {
+      product: {
+        id : productId,
+        name: product.name,
+        category: product.category,
+        price: product.price,
+        description: product.description,
+        quantity: product.quantity,
+        images: product.images,
+        seller: seller,
+        infoUser: product.infoUser,
+        dateAdded: product.dateAdded,
+      },
+    });
+  } catch (error) {
+    console.error(`Error fetching product: ${error.message}`);
+    res.status(500).send("Internal Server Error");
+  }
+};
+
 // Fonction utilitaire pour formater l'horodatage
 function getFormattedTimestamp(timestamp) {
   const timeDiff = Date.now() - new Date(timestamp).getTime();
@@ -584,6 +620,7 @@ function getFormattedTimestamp(timestamp) {
   }
   return new Date(timestamp).toLocaleTimeString();
 }
+
 
 
 // /**

@@ -543,7 +543,8 @@ exports.commentDelete = async (req, res) => {
     }
 
     // Mettre à jour le commentaire pour indiquer qu'il a été supprimé
-    comment.content = "Ce commentaire a été supprimé.";
+    console.log("comment", comment)
+    comment.comment = "Ce commentaire a été supprimé.";
     comment.isDeleted = true;
     comment.deletedAt = new Date(); // Enregistrer la date de suppression (optionnel)
     await comment.save();
@@ -598,7 +599,7 @@ exports.commentDelete = async (req, res) => {
 // Route API pour obtenir les produits du vendeur
 exports.apiProductDetail = async (req, res) => {
   const { categoryDetail, page = 1 } = req.body; // Récupère la catégorie et la page depuis la requête
-  console.log(req.body);
+  
   const ITEMS_PER_PAGE = 5; // Nombre de produits par page
 
   try {
